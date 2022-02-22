@@ -7,7 +7,7 @@ A simple CLI tool to convert amx file to CMP format.
 
 Install using `pip`:
 
-Download the .whl file from Relase and run below command
+Download the .whl file from Release and run below command
 
 ```
 $ pip install amxcmp-<version>-py3-none-any.whl
