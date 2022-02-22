@@ -4,18 +4,20 @@ from tqdm import tqdm
 
 
 def amxcmp(file):
-    success,failure = [], []
-    csv_file = open(file,"r")
+    success, failure = [], []
+    csv_file = open(file, "r")
     csv_reader = csv.DictReader(csv_file)
     line_count = 0
     started_at = time.monotonic()
-    pbar = tqdm(total=3)
-    for row in csv_reader:
+    with open(file, mode="r") as csv_file:
+        length = len(csv_file.readlines())
+
+    for row in tqdm(csv_reader, total=length - 1):
         iccid = isValidIccid(row["iccid"])
         imsi = isValidImsi(row["imsi"])
         msisdn = isValidMsisdn(row["msisdn"])
         reason = " / ".join(
-         [
+            [
                 msg
                 for msg in [
                     iccid["errorMessage"],
@@ -24,26 +26,25 @@ def amxcmp(file):
                 ]
                 if msg
             ]
-         )
+        )
         if iccid["ValidIccid"] and imsi["ValidImsi"] and msisdn["ValidMsisdn"]:
             success.append(
-              {"ICCID": row["iccid"], "IMSI": row["imsi"], "MSISDN": row["msisdn"]}
+                {"ICCID": row["iccid"], "IMSI": row["imsi"], "MSISDN": row["msisdn"]}
             )
         else:
             failure.append(
-                 {
+                {
                     "ICCID": row["iccid"],
                     "IMSI": row["imsi"],
                     "MSISDN": row["msisdn"],
                     "REASON": reason,
                 }
-              )
+            )
 
         line_count += 1
-        pbar.update(1)
     csv_file.close()
     total_time = time.monotonic() - started_at
-    return total_time,line_count,success,failure
+    return total_time, line_count, success, failure
 
 
 def isValidImsi(imsi):
