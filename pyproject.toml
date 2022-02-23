@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "amxcmp"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
 authors = ["dinesh876 <dineshadventure15@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6"
 click = "^8.0.4"
 tqdm = "^4.62.3"
 

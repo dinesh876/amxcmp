@@ -1,4 +1,5 @@
 import csv
+from email.errors import HeaderDefect
 import time
 from tqdm import tqdm
 
@@ -11,11 +12,16 @@ def amxcmp(file):
     started_at = time.monotonic()
     with open(file, mode="r") as csv_file:
         length = len(csv_file.readlines())
+    
+    header = next(csv.reader(open(file,"r")))
+    
+    if not validHeader(header):
+        raise ValueError("Please Provide Valid Header in csv file.")
 
     for row in tqdm(csv_reader, total=length - 1):
-        iccid = isValidIccid(row["iccid"])
-        imsi = isValidImsi(row["imsi"])
-        msisdn = isValidMsisdn(row["msisdn"])
+        iccid = isValidIccid(row["ICCID"])
+        imsi = isValidImsi(row["IMSI"])
+        msisdn = isValidMsisdn(row["MSISDN"])
         reason = " / ".join(
             [
                 msg
@@ -29,14 +35,14 @@ def amxcmp(file):
         )
         if iccid["ValidIccid"] and imsi["ValidImsi"] and msisdn["ValidMsisdn"]:
             success.append(
-                {"ICCID": row["iccid"], "IMSI": row["imsi"], "MSISDN": row["msisdn"]}
+                {"ICCID": row["ICCID"], "IMSI": row["IMSI"], "MSISDN": row["MSISDN"],"EID": row['eID']}
             )
         else:
             failure.append(
                 {
-                    "ICCID": row["iccid"],
-                    "IMSI": row["imsi"],
-                    "MSISDN": row["msisdn"],
+                    "ICCID": row["ICCID"],
+                    "IMSI": row["IMSI"],
+                    "MSISDN": row["MSISDN"],
                     "REASON": reason,
                 }
             )
@@ -95,8 +101,23 @@ def create_failure_csv(file, data, field_name):
 def create_success_csv(file, data, field_name) -> None:
     with open(file, mode="w") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_name)
-        writer.writeheader()
         for row in data:
             writer.writerow(
-                {"iccid": row["ICCID"], "imsi": row["IMSI"], "msisdn": row["MSISDN"]}
+                {
+                    "iccid": row["ICCID"],
+                    "imsi": row["IMSI"], 
+                    "msisdn": row["MSISDN"],
+                    "diccid":"",
+                    "dimsi":"",
+                    "dmsisdn":"",
+                    "eid":row["EID"],
+                    "sim_type":"",
+                }
             )
+
+def validHeader(header):
+    h = ["IMSI","ICCID","MSISDN","eID"]
+    for i in h:
+        if i not in header:
+            return False
+    return True

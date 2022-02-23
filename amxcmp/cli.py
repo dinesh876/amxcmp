@@ -17,14 +17,14 @@ def cli(file, output_file, error_file):
 
     if output_file:
         try:
-            success_fields = ["iccid", "imsi", "msisdn"]
+            success_fields = ["iccid", "imsi", "msisdn","diccid","dimsi","dmsisdn","eid","sim_type"]
             create_success_csv(output_file, success, success_fields)
         except Exception as e:
             print(e)
             sys.exit(1)
     else:
         try:
-            success_fields = ["iccid", "imsi", "msisdn"]
+            success_fields = ["iccid", "imsi", "msisdn","diccid","dimsi","dmsisdn","eid","sim_type"]
             create_success_csv("success.csv", success, success_fields)
         except Exception as e:
             print(e)

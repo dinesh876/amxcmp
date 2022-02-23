@@ -15,10 +15,10 @@ URL = "https://github.com/me/myproject"
 EMAIL = "dineshadventure15@gmail.com"
 AUTHOR = "Dinesh"
 REQUIRES_PYTHON = ">=3.6.0"
-VERSION = "0.1.0"
+VERSION = "1.0.0"
 
 # What packages are required for this module to be executed?
-REQUIRED = ["click"]
+REQUIRED = ["click","tqdm"]
 
 # What packages are optional?
 EXTRAS = {
@@ -114,7 +114,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
