@@ -14,36 +14,55 @@ def cli(file, output_file, error_file):
     except Exception as e:
         print(e)
         sys.exit(1)
+    if success:
+        if output_file:
+            try:
+                success_fields = [
+                    "iccid",
+                    "imsi",
+                    "msisdn",
+                    "diccid",
+                    "dimsi",
+                    "dmsisdn",
+                    "eid",
+                    "sim_type",
+                ]
+                create_success_csv(output_file, success, success_fields)
+            except Exception as e:
+                print(e)
+                sys.exit(1)
+        else:
+            try:
+                success_fields = [
+                    "iccid",
+                    "imsi",
+                    "msisdn",
+                    "diccid",
+                    "dimsi",
+                    "dmsisdn",
+                    "eid",
+                    "sim_type",
+                ]
+                create_success_csv("success.csv", success, success_fields)
+            except Exception as e:
+                print(e)
+                sys.exit(1)
 
-    if output_file:
-        try:
-            success_fields = ["iccid", "imsi", "msisdn","diccid","dimsi","dmsisdn","eid","sim_type"]
-            create_success_csv(output_file, success, success_fields)
-        except Exception as e:
-            print(e)
-            sys.exit(1)
-    else:
-        try:
-            success_fields = ["iccid", "imsi", "msisdn","diccid","dimsi","dmsisdn","eid","sim_type"]
-            create_success_csv("success.csv", success, success_fields)
-        except Exception as e:
-            print(e)
-            sys.exit(1)
-
-    if error_file:
-        try:
-            failure_fields = ["iccid", "imsi", "msisdn", "reason"]
-            create_failure_csv(error_file, failure, failure_fields)
-        except Exception as e:
-            print(e)
-            sys.exit(1)
-    else:
-        try:
-            failure_fields = ["iccid", "imsi", "msisdn", "reason"]
-            create_failure_csv("error.csv", failure, failure_fields)
-        except Exception as e:
-            print(e)
-            sys.exit(1)
+    if failure:
+        if error_file:
+            try:
+                failure_fields = ["iccid", "imsi", "msisdn", "reason"]
+                create_failure_csv(error_file, failure, failure_fields)
+            except Exception as e:
+                print(e)
+                sys.exit(1)
+        else:
+            try:
+                failure_fields = ["iccid", "imsi", "msisdn", "reason"]
+                create_failure_csv("error.csv", failure, failure_fields)
+            except Exception as e:
+                print(e)
+                sys.exit(1)
 
     display(total_time, line_count, success, failure)
 

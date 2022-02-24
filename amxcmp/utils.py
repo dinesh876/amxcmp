@@ -12,9 +12,9 @@ def amxcmp(file):
     started_at = time.monotonic()
     with open(file, mode="r") as csv_file:
         length = len(csv_file.readlines())
-    
-    header = next(csv.reader(open(file,"r")))
-    
+
+    header = next(csv.reader(open(file, "r")))
+
     if not validHeader(header):
         raise ValueError("Please Provide Valid Header in csv file.")
 
@@ -35,9 +35,14 @@ def amxcmp(file):
         )
         if iccid["ValidIccid"] and imsi["ValidImsi"] and msisdn["ValidMsisdn"]:
             success.append(
-                {"ICCID": row["ICCID"], "IMSI": row["IMSI"], "MSISDN": row["MSISDN"],"EID": generateEid("52",row["IMSI"])}
+                {
+                    "ICCID": row["ICCID"],
+                    "IMSI": row["IMSI"],
+                    "MSISDN": row["MSISDN"],
+                    "EID": generateEid("52", row["IMSI"]),
+                }
             )
-            
+
         else:
             failure.append(
                 {
@@ -106,22 +111,24 @@ def create_success_csv(file, data, field_name) -> None:
             writer.writerow(
                 {
                     "iccid": row["ICCID"],
-                    "imsi": row["IMSI"], 
+                    "imsi": row["IMSI"],
                     "msisdn": row["MSISDN"],
-                    "diccid":"",
-                    "dimsi":"",
-                    "dmsisdn":"",
-                    "eid":row["EID"],
-                    "sim_type":"",
+                    "diccid": "",
+                    "dimsi": "",
+                    "dmsisdn": "",
+                    "eid": row["EID"],
+                    "sim_type": "",
                 }
             )
 
+
 def validHeader(header):
-    h = ["IMSI","ICCID","MSISDN","eID"]
+    h = ["IMSI", "ICCID", "MSISDN", "eID"]
     for i in h:
         if i not in header:
             return False
     return True
 
-def generateEid(country_code,imsi):
+
+def generateEid(country_code, imsi):
     return country_code + "0" * 15 + imsi
