@@ -35,8 +35,9 @@ def amxcmp(file):
         )
         if iccid["ValidIccid"] and imsi["ValidImsi"] and msisdn["ValidMsisdn"]:
             success.append(
-                {"ICCID": row["ICCID"], "IMSI": row["IMSI"], "MSISDN": row["MSISDN"],"EID": row['eID']}
+                {"ICCID": row["ICCID"], "IMSI": row["IMSI"], "MSISDN": row["MSISDN"],"EID": generateEid("52",row["IMSI"])}
             )
+            
         else:
             failure.append(
                 {
@@ -121,3 +122,6 @@ def validHeader(header):
         if i not in header:
             return False
     return True
+
+def generateEid(country_code,imsi):
+    return country_code + "0" * 15 + imsi
