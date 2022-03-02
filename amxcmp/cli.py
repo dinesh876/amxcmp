@@ -1,21 +1,22 @@
 import click
 import sys
-from .utils import amxcmp, create_success_csv, create_failure_csv
+from .utils import amxcmp, create_success_csv, create_failure_csv, create_success_bss_csv
 from .stats import Result
 
 
 @click.command()
 @click.option("--file", "-f", required=True, help="Path to input csv file")
-@click.option("--output-file", "-o", default=None, help="Path to Success file")
+@click.option("--aircontrol-file", "-af", default=None, help="Path to Aircontrol Success file")
+@click.option("--bss-file", "-bf", default=None, help="Path to BSS Success file")
 @click.option("--error-file", "-e", default=None, help="Path to Error file")
-def cli(file, output_file, error_file):
+def cli(file, aircontrol_file, bss_file, error_file):
     try:
         total_time, line_count, success, failure = amxcmp(file)
     except Exception as e:
         print(e)
         sys.exit(1)
     if success:
-        if output_file:
+        if aircontrol_file:
             try:
                 success_fields = [
                     "iccid",
@@ -27,7 +28,7 @@ def cli(file, output_file, error_file):
                     "eid",
                     "sim_type",
                 ]
-                create_success_csv(output_file, success, success_fields)
+                create_success_csv(aircontrol_file, success, success_fields)
             except Exception as e:
                 print(e)
                 sys.exit(1)
@@ -43,10 +44,34 @@ def cli(file, output_file, error_file):
                     "eid",
                     "sim_type",
                 ]
-                create_success_csv("success.csv", success, success_fields)
+                create_success_csv("aircontrol_success.csv", success, success_fields)
             except Exception as e:
                 print(e)
                 sys.exit(1)
+            
+        if bss_file:
+            try:
+                success_fields = [
+                    "iccid",
+                    "imsi",
+                    "msisdn",
+                ]
+                create_success_bss_csv(bss_file, success, success_fields)
+            except Exception as e:
+                print(e)
+                sys.exit(1)
+        else:
+            try:
+                success_fields = [
+                    "iccid",
+                    "imsi",
+                    "msisdn",
+                ]
+                create_success_bss_csv("bss_success.csv", success, success_fields)
+            except Exception as e:
+                print(e)
+                sys.exit(1)
+
 
     if failure:
         if error_file:

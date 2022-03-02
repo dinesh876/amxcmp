@@ -132,3 +132,17 @@ def validHeader(header):
 
 def generateEid(country_code, imsi):
     return country_code + "0" * 15 + imsi
+
+
+
+def create_success_bss_csv(file, data, field_name) -> None:
+    with open(file, mode="w") as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=field_name)
+        for row in data:
+            writer.writerow(
+                {
+                    "msisdn": row["MSISDN"],
+                    "imsi": row["IMSI"],
+                    "iccid": row["ICCID"]
+                }
+            )
