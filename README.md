@@ -33,7 +33,7 @@ Total time              0.010318530723452568s
 If we want to add specify output file path file, we'll use the `-o` option, and we can use the `-e` option to specify error file path that we'd like to make:
 
 ```
-$ amxcmp -f sim.csv -o /opt/output.csv -e error.csv
+$ amxcmp -f sim.csv -af /opt/output_aircontrol.csv -bf bss.csv -e error.csv
 Completed!
 
 ---------- Results ----------
