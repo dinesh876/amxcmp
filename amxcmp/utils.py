@@ -89,7 +89,7 @@ def isValidMsisdn(msisdn):
     }
 
 
-def create_failure_csv(file, data, field_name):
+def create_cmp_failure_csv(file, data, field_name):
     with open(file, mode="w") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_name)
         writer.writeheader()
@@ -99,6 +99,20 @@ def create_failure_csv(file, data, field_name):
                     "iccid": row["ICCID"],
                     "imsi": row["IMSI"],
                     "msisdn": row["MSISDN"],
+                    "reason": row["REASON"],
+                }
+            )
+
+def create_bss_failure_csv(file, data, field_name):
+    with open(file, mode="w") as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=field_name)
+        writer.writeheader()
+        for row in data:
+            writer.writerow(
+                {
+                    "msisdn": row["MSISDN"],
+                    "imsi": row["IMSI"],
+                    "iccid": row["ICCID"],
                     "reason": row["REASON"],
                 }
             )
