@@ -53,9 +53,9 @@ def cli(file, aircontrol_file, bss_file, cmp_error_file, bss_error_file):
         if bss_file:
             try:
                 success_fields = [
-                    "iccid",
-                    "imsi",
                     "msisdn",
+                    "imsi",
+                    "iccid",
                 ]
                 create_success_bss_csv(bss_file, success, success_fields)
             except Exception as e:
@@ -64,9 +64,9 @@ def cli(file, aircontrol_file, bss_file, cmp_error_file, bss_error_file):
         else:
             try:
                 success_fields = [
-                    "iccid",
-                    "imsi",
                     "msisdn",
+                    "imsi",
+                    "iccid",
                 ]
                 create_success_bss_csv("bss_success.csv", success, success_fields)
             except Exception as e:
@@ -91,14 +91,14 @@ def cli(file, aircontrol_file, bss_file, cmp_error_file, bss_error_file):
                 sys.exit(1)
         if bss_error_file:
             try:
-                failure_fields = ["iccid", "imsi", "msisdn", "reason"]
+                failure_fields = ["msisdn", "imsi", "iccid", "reason"]
                 create_bss_failure_csv(bss_error_file, failure, failure_fields)
             except Exception as e:
                 print(e)
                 sys.exit(1)
         else:
             try:
-                failure_fields = ["iccid", "imsi", "msisdn", "reason"]
+                failure_fields = ["msisdn", "imsi", "iccid", "reason"]
                 create_bss_failure_csv("bss_error.csv", failure, failure_fields)
             except Exception as e:
                 print(e)
