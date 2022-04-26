@@ -1,11 +1,11 @@
 import csv
-from email.errors import HeaderDefect
+from collections import defaultdict
 import time
 from tqdm import tqdm
 
 
 def amxcmp(file):
-    success, failure = [], []
+    success, failure = defaultdict(list), []
     csv_file = open(file, "r")
     csv_reader = csv.DictReader(csv_file)
     line_count = 0
@@ -34,12 +34,12 @@ def amxcmp(file):
             ]
         )
         if iccid["ValidIccid"] and imsi["ValidImsi"] and msisdn["ValidMsisdn"]:
-            success.append(
-                {
+            success[row['enterprisedID']].append(
+                   { 
                     "ICCID": row["ICCID"],
                     "IMSI": row["IMSI"],
                     "MSISDN": row["MSISDN"],
-                    "EID": generateEid("52", row["IMSI"]),
+                    "EID": generateEid("52", row["IMSI"])
                 }
             )
 
@@ -50,6 +50,7 @@ def amxcmp(file):
                     "IMSI": row["IMSI"],
                     "MSISDN": row["MSISDN"],
                     "REASON": reason,
+                    "ENTERPRISEID": row["enterprisedID"]
                 }
             )
 
@@ -119,6 +120,7 @@ def create_bss_failure_csv(file, data, field_name):
 
 
 def create_success_csv(file, data, field_name) -> None:
+    
     with open(file, mode="w") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=field_name)
         for row in data:
@@ -134,6 +136,7 @@ def create_success_csv(file, data, field_name) -> None:
                     "sim_type": "",
                 }
             )
+        return
 
 
 def validHeader(header):

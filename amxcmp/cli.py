@@ -2,6 +2,9 @@ import click
 import sys
 from .utils import amxcmp, create_success_csv, create_cmp_failure_csv,create_bss_failure_csv, create_success_bss_csv
 from .stats import Result
+import os
+import uuid
+from pathlib import Path
 
 
 @click.command()
@@ -13,6 +16,7 @@ from .stats import Result
 def cli(file, aircontrol_file, bss_file, cmp_error_file, bss_error_file):
     try:
         total_time, line_count, success, failure = amxcmp(file)
+        print(success)
     except Exception as e:
         print(e)
         sys.exit(1)
@@ -29,7 +33,15 @@ def cli(file, aircontrol_file, bss_file, cmp_error_file, bss_error_file):
                     "eid",
                     "sim_type",
                 ]
-                create_success_csv(aircontrol_file, success, success_fields)
+                for s in success:
+                    temp  = aircontrol_file.split('/')
+                    newdir = ('/').join(temp[:-1]) + '/' + s
+                    check_dir = os.path.isdir(newdir)
+                    if not check_dir:
+                        os.makedirs(newdir,mode=0o766) 
+                    file_name = ('_').join((Path(aircontrol_file).stem ,s,uuid.uuid4().hex)) + '.csv'
+                    new_file = newdir + '/' + file_name
+                    create_success_csv(new_file, success[s], success_fields)
             except Exception as e:
                 print(e)
                 sys.exit(1)
@@ -45,7 +57,14 @@ def cli(file, aircontrol_file, bss_file, cmp_error_file, bss_error_file):
                     "eid",
                     "sim_type",
                 ]
-                create_success_csv("aircontrol_success.csv", success, success_fields)
+                for s in success:
+                    newdir = os.path.join(os.getcwd(),s) 
+                    check_dir = os.path.isdir(newdir)
+                    if not check_dir:
+                        os.makedirs(newdir,mode=0o766) 
+                    file_name = ('_').join(("aircontrol_success" ,s,uuid.uuid4().hex)) + '.csv'
+                    new_file = newdir + '/' + file_name
+                    create_success_csv(new_file, success[s], success_fields)
             except Exception as e:
                 print(e)
                 sys.exit(1)
@@ -57,7 +76,16 @@ def cli(file, aircontrol_file, bss_file, cmp_error_file, bss_error_file):
                     "imsi",
                     "iccid",
                 ]
-                create_success_bss_csv(bss_file, success, success_fields)
+                for s in success:
+                    print(s)
+                    temp  = bss_file.split('/')
+                    newdir = ('/').join(temp[:-1]) + '/' + s
+                    check_dir = os.path.isdir(newdir)
+                    if not check_dir:
+                        os.makedirs(newdir,mode=0o766) 
+                    file_name = ('_').join((Path(bss_file).stem ,s,uuid.uuid4().hex)) + '.csv'
+                    new_file = newdir + '/' + file_name
+                    create_success_bss_csv(new_file, success[s], success_fields)
             except Exception as e:
                 print(e)
                 sys.exit(1)
@@ -68,7 +96,14 @@ def cli(file, aircontrol_file, bss_file, cmp_error_file, bss_error_file):
                     "imsi",
                     "iccid",
                 ]
-                create_success_bss_csv("bss_success.csv", success, success_fields)
+                for s in success:
+                    newdir = os.path.join(os.getcwd(),s) 
+                    check_dir = os.path.isdir(newdir)
+                    if not check_dir:
+                        os.makedirs(newdir,mode=0o766) 
+                    file_name = ('_').join(("bss_success" ,s,uuid.uuid4().hex)) + '.csv'
+                    new_file = newdir + '/' + file_name
+                    create_success_bss_csv(new_file, success[s], success_fields)
             except Exception as e:
                 print(e)
                 sys.exit(1)

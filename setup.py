@@ -15,7 +15,7 @@ URL = "https://github.com/me/myproject"
 EMAIL = "dineshadventure15@gmail.com"
 AUTHOR = "Dinesh"
 REQUIRES_PYTHON = ">=3.6.0"
-VERSION = "1.4.1"
+VERSION = "1.4.2"
 
 # What packages are required for this module to be executed?
 REQUIRED = ["click","tqdm"]
