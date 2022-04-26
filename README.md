@@ -1,4 +1,4 @@
-# assault
+# amxcmp cli
 
 A simple CLI tool to convert amx file to CMP format.
 
